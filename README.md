@@ -2,13 +2,13 @@
 
 ### Introduction
 
-This is a minimal config designed to run on old spec PCs, but still be able
+This is a minimal config designed to run on old spec PCs, but still being able
 to achieve IDE like features, like code completion, diagnostics and actions.
 
 This config works best in kitty terminal with Nerd Font Fira Code (or other
 nerd fonts).
 
-It also include keybinds of my own likings, like SPC+w for window manipulation
+It also includes keybinds of my own likings, like SPC+w for window manipulation
 instead of C-w and SPC+p, SPC+y, SPC+d for saving to system clipboard (plus),
 the usual p, y, d for saving to neovim clipboard registers (unnamed) and SPC+e
 to open the file explorer (Lexplore or Nvim-Tree).
@@ -22,7 +22,7 @@ you can launch this mode using the shell command:
 nvim -u '$HOME/.config/nvim/lua/rawinit.lua'
 ```
 
-I like making it an alias and use it as my manpager as well in my .zshrc
+I also like making it an alias and use it as my manpager in my .zshrc
 ```shell
 
 QVIM="nvim -u '$HOME/.config/nvim/lua/rawinit.lua'"
@@ -32,7 +32,7 @@ export MANPAGER="$QVIM +Man!"
 
 ```
 
-This config uses the Lazy.nvim package manager.
+This config uses the Lazy.nvim plugin manager.
 
 ### Plugins (29 total)
 
