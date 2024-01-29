@@ -1,5 +1,7 @@
 # My Neovim Config
 
+### Introduction
+
 This is a minimal config designed to run on old spec PCs, but still be able
 to achieve IDE like features, like code completion, diagnostics and actions.
 
@@ -29,3 +31,39 @@ alias qvim=$QVIM
 export MANPAGER="$QVIM +Man!"
 
 ```
+
+This config uses the Lazy.nvim package manager.
+
+### Plugins (28 total)
+
+- folke/tokyonight.nvim
+- tanvirtin/monokai.nvim
+- nvim-lualine/lualine.nvim
+- lukas-reineke/indent-blankline.nvim
+- nvim-treesitter/nvim-treesitter
+- numToStr/Comment.nvim
+- tpope/vim-surround
+- nvim-tree/nvim-web-devicons
+- nvim-lua/plenary.nvim
+- nvim-telescope/telescope.nvim
+- nvim-telescope/telescope-fzf-native.nvim
+- tpope/vim-fugitive
+- lewis6991/gitsigns.nvim
+- editorconfig/editorconfig.vim
+- moll/vim-bbye
+- thedenisnikulin/vim-cyberpunk
+- morhetz/gruvbox
+- neovim/nvim-lspconfig
+- hrsh7th/nvim-cmp
+- hrsh7th/cmp-buffer
+- saddparwaiz1/cmp_luasnip
+- hrsh7th/cmp-nvim-lsp
+- williamboman/mason.nvim
+- williamboman/mason-lspconfig.nvim
+
+### Added Colorschemes
+
+- tokyonight
+- monokai
+- cyberpunk
+- gruvbox
