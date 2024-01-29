@@ -34,7 +34,7 @@ export MANPAGER="$QVIM +Man!"
 
 This config uses the Lazy.nvim package manager.
 
-### Plugins (28 total)
+### Plugins (29 total)
 
 - folke/tokyonight.nvim
 - tanvirtin/monokai.nvim
@@ -68,3 +68,11 @@ This config uses the Lazy.nvim package manager.
 - monokai
 - cyberpunk
 - gruvbox
+
+### Screenshots
+
+![2024-01-29_05-02](https://github.com/atomoxetine/nvim/assets/132525922/c6174b3a-f56d-4757-9e26-559ea28196e6)
+
+![2024-01-29_05-03](https://github.com/atomoxetine/nvim/assets/132525922/fbd71086-08c9-4f60-a567-3dc500b1c9fb)
+
+![2024-01-29_05-07](https://github.com/atomoxetine/nvim/assets/132525922/d2486840-4d13-4ec5-bded-156403fdaa15)
