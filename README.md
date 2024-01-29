@@ -60,6 +60,7 @@ This config uses the Lazy.nvim package manager.
 - hrsh7th/cmp-nvim-lsp
 - williamboman/mason.nvim
 - williamboman/mason-lspconfig.nvim
+- wakatime/vim-wakatime
 
 ### Added Colorschemes
 

@@ -67,6 +67,7 @@ lazy.setup({
     },
     { 'williamboman/mason.nvim' },
     { 'williamboman/mason-lspconfig.nvim' },
+    { 'wakatime/vim-wakatime', lazy = false },
 })
 
 -- Setting the ColorScheme
