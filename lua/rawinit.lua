@@ -9,7 +9,7 @@ vim.opt.breakindent = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.autoindent = true
-vim.opt.cc = '80'
+vim.opt.cc = '65'
 vim.opt.expandtab = true
 vim.opt.clipboard = 'unnamed'
 
@@ -56,6 +56,10 @@ vim.keymap.set('i', '"<backspace>', '"')
 vim.keymap.set('i', '(<backspace>', '(')
 vim.keymap.set('i', '[<backspace>', '[')
 vim.keymap.set('i', '{<backspace>', '{')
+vim.keymap.set('i', '"<escape>', '"')
+vim.keymap.set('i', '(<escape>', '(')
+vim.keymap.set('i', '[<escape>', '[')
+vim.keymap.set('i', '{<escape>', '{')
 vim.keymap.set('i', '"<space>', '"  "<left><left>')
 vim.keymap.set('i', '(<space>', '(  )<left><left>')
 vim.keymap.set('i', '[<space>', '[  ]<left><left>')
@@ -65,7 +69,7 @@ vim.keymap.set('i', '{<space>', '{  }<left><left>')
 -- vim.keymap.set('i', '[<cr>', '[<cr><cr>]<up><tab>')
 -- vim.keymap.set('i', '{<cr>', '{<cr><cr>}<up><tab>')
 
-vim.keymap.set('n', '<space>cs', ':colorscheme<space>')
+vim.keymap.set('n', '<leader>ccs', ':colorscheme<space>')
 
 return {}
 
