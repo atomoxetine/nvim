@@ -76,3 +76,8 @@ This config uses the Lazy.nvim plugin manager.
 ![2024-01-29_05-03](https://github.com/atomoxetine/nvim/assets/132525922/fbd71086-08c9-4f60-a567-3dc500b1c9fb)
 
 ![2024-01-29_05-07](https://github.com/atomoxetine/nvim/assets/132525922/d2486840-4d13-4ec5-bded-156403fdaa15)
+
+### Dependencies
+
+- cmake
+- git
