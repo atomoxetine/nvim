@@ -68,12 +68,22 @@ lazy.setup({
   { 'williamboman/mason.nvim' },
   { 'williamboman/mason-lspconfig.nvim' },
   { 'wakatime/vim-wakatime',            lazy = false },
+  { 'whatyouhide/vim-gotham' },
+  { 'maxmx03/fluoromachine.nvim' },
 })
+
+local fluoromachine = require 'fluoromachine'
+
+fluoromachine.setup {
+  glow = true,
+  -- available opts are fluoromachine, retrowave, delta
+  theme = "retrowave"
+}
 
 -- Setting the ColorScheme
 vim.opt.termguicolors = true
 -- cyberpunk theme is broken with treesitter :sob:
-vim.cmd.colorscheme('tokyonight-night')
+vim.cmd.colorscheme('fluoromachine')
 
 
 -- lualine
