@@ -22,13 +22,11 @@ you can launch this mode using the shell command:
 nvim -u '$HOME/.config/nvim/lua/rawinit.lua'
 ```
 
-I also like making it an alias and use it as my manpager in my .zshrc
+I also like making it an alias
 ```shell
 
 QVIM="nvim -u '$HOME/.config/nvim/lua/rawinit.lua'"
 alias qvim=$QVIM
-
-export MANPAGER="$QVIM +Man!"
 
 ```
 
@@ -71,13 +69,11 @@ This config uses the Lazy.nvim plugin manager.
 
 ### Screenshots
 
-![2024-01-29_05-02](https://github.com/atomoxetine/nvim/assets/132525922/c6174b3a-f56d-4757-9e26-559ea28196e6)
+![image](https://github.com/atomoxetine/nvim/assets/132525922/8e2c6c48-6b6d-44f6-adfd-47a099d5a6c3)
 
-![2024-01-29_05-03](https://github.com/atomoxetine/nvim/assets/132525922/fbd71086-08c9-4f60-a567-3dc500b1c9fb)
-
-![2024-01-29_05-07](https://github.com/atomoxetine/nvim/assets/132525922/d2486840-4d13-4ec5-bded-156403fdaa15)
 
 ### Dependencies
 
 - cmake
 - git
+- a patched font
