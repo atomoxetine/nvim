@@ -45,7 +45,7 @@ lazy.setup({
   { 'nvim-treesitter/nvim-treesitter',          build = ':TSUpdate' },
   { 'numToStr/Comment.nvim' },
   { 'tpope/vim-surround' },
-  { 'nvim-tree/nvim-tree.lua' },
+  -- { 'nvim-tree/nvim-tree.lua' },
   { 'nvim-tree/nvim-web-devicons' },
   { 'nvim-lua/plenary.nvim' },
   { 'nvim-telescope/telescope.nvim' },
@@ -113,14 +113,14 @@ require('nvim-treesitter.configs').setup({
 require('Comment').setup()
 
 -- nvim-tree
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-require('nvim-tree').setup({
-  view = {
-    width = 30,
-  },
-})
-vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeToggle<cr>')
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
+-- require('nvim-tree').setup({
+--   view = {
+--     width = 30,
+--   },
+-- })
+-- vim.keymap.set('n', '<leader>t', '<cmd>NvimTreeToggle<cr>')
 
 -- telescope
 vim.keymap.set('n', '<leader><space>', '<cmd>Telescope buffers<cr>')
