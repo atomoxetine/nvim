@@ -41,6 +41,7 @@ This config uses the Lazy.nvim plugin manager.
 - nvim-treesitter/nvim-treesitter
 - numToStr/Comment.nvim
 - tpope/vim-surround
+- nvim-tree/nvim-tree
 - nvim-tree/nvim-web-devicons
 - nvim-lua/plenary.nvim
 - nvim-telescope/telescope.nvim
@@ -66,10 +67,17 @@ This config uses the Lazy.nvim plugin manager.
 - monokai
 - cyberpunk
 - gruvbox
+- space-vim-theme
+- fluoromachine
+- catppuccin
 
 ### Screenshots
 
-![image](https://github.com/atomoxetine/nvim/assets/132525922/8e2c6c48-6b6d-44f6-adfd-47a099d5a6c3)
+![image](https://github.com/atomoxetine/nvim/assets/132525922/c960252a-cbdf-47a3-8797-e7231502473a)
+![image](https://github.com/atomoxetine/nvim/assets/132525922/d1fc80be-b6b4-498e-9fab-476a40515d94)
+![image](https://github.com/atomoxetine/nvim/assets/132525922/c3feef2d-5446-4d32-a090-931bec023f30)
+![image](https://github.com/atomoxetine/nvim/assets/132525922/4f7637af-8617-4623-a8f6-a1e29fad7432)
+![image](https://github.com/atomoxetine/nvim/assets/132525922/4dd3f148-fe56-4379-b425-234cd9d7da94)
 
 
 ### Dependencies
