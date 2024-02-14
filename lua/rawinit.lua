@@ -135,6 +135,6 @@ vim.keymap.set('n', '<F3>', function ()
     vim.cmd.colorscheme(next)
 end)
 
+vim.opt.termguicolors = true
+
 return {}
-
-
