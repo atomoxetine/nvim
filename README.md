@@ -32,7 +32,7 @@ alias qvim=$QVIM
 
 This config uses the Lazy.nvim plugin manager.
 
-### Plugins (29 total)
+### Plugins (31 total)
 
 - folke/tokyonight.nvim
 - tanvirtin/monokai.nvim
@@ -56,10 +56,15 @@ This config uses the Lazy.nvim plugin manager.
 - hrsh7th/nvim-cmp
 - hrsh7th/cmp-buffer
 - saddparwaiz1/cmp_luasnip
+- L3MON4D3/LuaSnip
 - hrsh7th/cmp-nvim-lsp
 - williamboman/mason.nvim
 - williamboman/mason-lspconfig.nvim
 - wakatime/vim-wakatime
+- whatyouhide/vim-gotham
+- maxmx03/fluoromachine.nvim
+- liuchengxu/space-vim-theme
+- catppuccin/nvim
 
 ### Added Colorschemes
 
