@@ -65,6 +65,7 @@ This config uses the Lazy.nvim plugin manager.
 - maxmx03/fluoromachine.nvim
 - liuchengxu/space-vim-theme
 - catppuccin/nvim
+- nvim-autopairs
 
 ### Added Colorschemes
 

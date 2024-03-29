@@ -71,7 +71,14 @@ lazy.setup({
     { 'whatyouhide/vim-gotham' },
     { 'maxmx03/fluoromachine.nvim' },
     { 'liuchengxu/space-vim-theme' },
-    { "catppuccin/nvim", name = "catppuccin", priority = 1000 }
+    { "catppuccin/nvim",                  name = "catppuccin", priority = 1000 },
+    {
+        'windwp/nvim-autopairs',
+        event = "InsertEnter",
+        config = true
+        -- use opts = {} for passing setup options
+        -- this is equalent to setup({}) function
+    }
 })
 
 local fluoromachine = require 'fluoromachine'
@@ -83,7 +90,7 @@ fluoromachine.setup {
 }
 
 -- Setting the ColorScheme
-vim.cmd.colorscheme('catppuccin-mocha')
+vim.cmd.colorscheme('space_vim_theme')
 
 
 -- lualine
@@ -106,6 +113,7 @@ require('nvim-treesitter.configs').setup({
         'cpp',
         'rust',
         'yaml',
+        'toml',
         'kotlin'
     }
 })
@@ -338,7 +346,7 @@ cmp.setup({
         end,
     },
     mapping = {
-        ['<C-k>'] = cmp.mapping.select_prev_item(select_opts),
+        ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
         ['<C-j>'] = cmp.mapping.select_next_item(select_opts),
         ['<up>'] = cmp.mapping.select_prev_item(select_opts),
         ['<down>'] = cmp.mapping.select_next_item(select_opts),
@@ -374,6 +382,8 @@ cmp.setup({
         end, { 'i', 's' }),
     },
 })
+
+require("nvim-autopairs").setup({})
 
 local sign = function(opts)
     vim.fn.sign_define(opts.name, {
