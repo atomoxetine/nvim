@@ -38,7 +38,6 @@ lazy.path = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 lazy.opts = {}
 
 lazy.setup({
-    { 'folke/tokyonight.nvim' },
     { 'tanvirtin/monokai.nvim' },
     { 'nvim-lualine/lualine.nvim' },
     { 'lukas-reineke/indent-blankline.nvim',      main = "ibl",                                                                                                                          opts = {} },
@@ -54,7 +53,6 @@ lazy.setup({
     { 'lewis6991/gitsigns.nvim' },
     { 'editorconfig/editorconfig-vim' },
     { 'moll/vim-bbye' },
-    { 'thedenisnikulin/vim-cyberpunk' },
     { 'morhetz/gruvbox' },
     { 'neovim/nvim-lspconfig' },
     { 'hrsh7th/nvim-cmp' },
@@ -68,9 +66,6 @@ lazy.setup({
     { 'williamboman/mason.nvim' },
     { 'williamboman/mason-lspconfig.nvim' },
     { 'wakatime/vim-wakatime',            lazy = false },
-    { 'whatyouhide/vim-gotham' },
-    { 'maxmx03/fluoromachine.nvim' },
-    { 'liuchengxu/space-vim-theme' },
     { "catppuccin/nvim",                  name = "catppuccin", priority = 1000 },
     {
         'windwp/nvim-autopairs',
@@ -78,19 +73,21 @@ lazy.setup({
         config = true
         -- use opts = {} for passing setup options
         -- this is equalent to setup({}) function
+    },
+    {
+        'ray-x/aurora',
+        init = function()
+          -- vim.g.aurora_italic = 1
+          -- vim.g.aurora_transparent = 1
+          vim.g.aurora_bold = 1
+        end,
+        config = function()
+            vim.cmd.colorscheme "aurora"
+            -- override defaults
+            vim.api.nvim_set_hl(0, '@number', {fg='#e933e3'})
+        end
     }
 })
-
-local fluoromachine = require 'fluoromachine'
-
-fluoromachine.setup {
-    glow = true,
-    -- available opts are fluoromachine, retrowave, delta
-    theme = "fluoromachine"
-}
-
--- Setting the ColorScheme
-vim.cmd.colorscheme('space_vim_theme')
 
 
 -- lualine
@@ -154,6 +151,10 @@ require("nvim-tree").setup({
             return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
         end,
     },
+    filters = {
+        dotfiles = false,
+        git_ignored = false,
+    },
 })
 
 vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeFindFileToggle<cr>')
@@ -175,7 +176,7 @@ require('gitsigns').setup({
         delete = { text = '‾' },
         topdelete = { text = '_' },
         changedelete = { text = '~' },
-        untracked = { text = "┆" }
+        untracked = { text = "%" }
     }
 })
 
@@ -190,19 +191,6 @@ require('mason').setup()
 require('mason-lspconfig').setup()
 
 require('luasnip.loaders.from_vscode').lazy_load()
--- require('snippy').setup({
---     mappings = {
---         is = {
---             ['<Tab>'] = 'expand_or_advance',
---             ['<S-Tab>'] = 'previous',
---         },
---         nx = {
---             ['<leader>x'] = 'cut_text',
---         },
---     },
--- })
--- local capabilites = vim.lsp.protocol.make_client_capabilities()
--- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
@@ -241,7 +229,6 @@ lspconfig.rust_analyzer.setup {
         }
     }
 }
-lspconfig.tsserver.setup {}
 lspconfig.lua_ls.setup {
     capabilities = capabilities,
     on_init = function(client)
@@ -274,7 +261,18 @@ lspconfig.lua_ls.setup {
     end
 }
 lspconfig.bashls.setup {}
-
+lspconfig.htmx.setup {
+    filetypes = { "html", "templ", "htmldjango", "htmx" }
+}
+lspconfig.html.setup {
+    filetypes = { "html", "templ", "htmldjango", "htmx" }
+}
+lspconfig.tailwindcss.setup {
+    filetypes = { "html", "templ", "htmldjango", "htmx" }
+}
+lspconfig.tsserver.setup {
+    filetypes = { "html", "templ", "htmldjango", "htmx", "js", "jsx", "ts", "tsx" }
+}
 
 vim.keymap.set('n', '<leader>x', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>n', vim.diagnostic.goto_prev)
@@ -324,7 +322,7 @@ cmp.setup({
     },
     sources = {
         { name = 'path' },
-        { name = 'nvim_lsp', keyword_length = 1 },
+        { name = 'nvim_lsp', keyword_length = 2 },
         { name = 'buffer',   keyword_length = 3 },
         { name = 'luasnip',  keyword_length = 2 },
     },
@@ -336,9 +334,9 @@ cmp.setup({
         format = function(entry, item)
             local menu_icon = {
                 nvim_lsp = 'λ',
-                luasnip = '⋗',
+                luasnip = '@',
                 buffer = 'Ω',
-                path = '🖫',
+                path = '$',
             }
 
             item.menu = menu_icon[entry.source.name]
@@ -347,12 +345,12 @@ cmp.setup({
     },
     mapping = {
         ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
-        ['<C-j>'] = cmp.mapping.select_next_item(select_opts),
+        ['<C-n>'] = cmp.mapping.select_next_item(select_opts),
         ['<up>'] = cmp.mapping.select_prev_item(select_opts),
         ['<down>'] = cmp.mapping.select_next_item(select_opts),
+        -- ['<escape>'] = cmp.mapping.abort(),
         ['<C-u>'] = cmp.mapping.scroll_docs(-4),
         ['<C-d>'] = cmp.mapping.scroll_docs(4),
-        ['<escape>'] = cmp.mapping.abort(),
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
         ['<CR>'] = cmp.mapping.confirm({ select = false }),
         ['<C-f>'] = cmp.mapping(function(fallback)
@@ -393,10 +391,10 @@ local sign = function(opts)
     })
 end
 
-sign({ name = 'DiagnosticSignError', text = '✘' })
-sign({ name = 'DiagnosticSignWarn', text = '▲' })
-sign({ name = 'DiagnosticSignHint', text = '⚑' })
-sign({ name = 'DiagnosticSignInfo', text = '»' })
+sign({ name = 'DiagnosticSignError', text = 'X' })
+sign({ name = 'DiagnosticSignWarn', text = '!' })
+sign({ name = 'DiagnosticSignHint', text = '*' })
+sign({ name = 'DiagnosticSignInfo', text = 'i' })
 
 vim.diagnostic.config({
     virtual_text = false,
