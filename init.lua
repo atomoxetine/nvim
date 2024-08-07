@@ -82,16 +82,20 @@ lazy.setup({
           vim.g.aurora_bold = 1
         end,
         config = function()
-            vim.cmd.colorscheme "aurora"
-            -- override defaults
-            vim.api.nvim_set_hl(0, '@number', {fg='#e933e3'})
+            -- vim.cmd.colorscheme "aurora"
+            -- -- override defaults
+            -- vim.api.nvim_set_hl(0, '@number', {fg='#e933e3'})
         end
     }
 })
 
+-- colorscheme
+vim.cmd.colorscheme "catppuccin-mocha"
 
 -- lualine
-require('lualine').setup()
+require('lualine').setup({
+    options = { section_separators = '', component_separators = '' }
+})
 
 --treesitter
 require('nvim-treesitter.configs').setup({
