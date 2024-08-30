@@ -40,11 +40,12 @@ lazy.opts = {}
 lazy.setup({
     { 'tanvirtin/monokai.nvim' },
     { 'nvim-lualine/lualine.nvim' },
-    { 'lukas-reineke/indent-blankline.nvim',      main = "ibl",                                                                                                                          opts = {} },
+    -- { 'lukas-reineke/indent-blankline.nvim',      main = "ibl",                                                                                                                          opts = {} },
     { 'nvim-treesitter/nvim-treesitter',          build = ':TSUpdate' },
     { 'numToStr/Comment.nvim' },
     { 'tpope/vim-surround' },
     { 'nvim-tree/nvim-tree.lua' },
+    -- { 'prichrd/netrw.nvim',                       opts = {} },
     { 'nvim-tree/nvim-web-devicons' },
     { 'nvim-lua/plenary.nvim' },
     { 'nvim-telescope/telescope.nvim' },
@@ -53,8 +54,6 @@ lazy.setup({
     { 'lewis6991/gitsigns.nvim' },
     { 'editorconfig/editorconfig-vim' },
     { 'moll/vim-bbye' },
-    { 'morhetz/gruvbox' },
-    { 'neovim/nvim-lspconfig' },
     { 'hrsh7th/nvim-cmp' },
     { 'hrsh7th/cmp-buffer' },
     { 'saadparwaiz1/cmp_luasnip' },
@@ -65,8 +64,9 @@ lazy.setup({
     },
     { 'williamboman/mason.nvim' },
     { 'williamboman/mason-lspconfig.nvim' },
+    { 'neovim/nvim-lspconfig' },
     { 'wakatime/vim-wakatime',            lazy = false },
-    { "catppuccin/nvim",                  name = "catppuccin", priority = 1000 },
+    { "rose-pine/neovim",                 name = "rose-pine" },
     {
         'windwp/nvim-autopairs',
         event = "InsertEnter",
@@ -77,50 +77,77 @@ lazy.setup({
     {
         'ray-x/aurora',
         init = function()
-          -- vim.g.aurora_italic = 1
-          -- vim.g.aurora_transparent = 1
-          vim.g.aurora_bold = 1
+            -- vim.g.aurora_italic = 1
+            -- vim.g.aurora_transparent = 1
+            vim.g.aurora_bold = 1
         end,
+    },
+    {
+        "christoomey/vim-tmux-navigator",
+        cmd = {
+            "TmuxNavigateLeft",
+            "TmuxNavigateDown",
+            "TmuxNavigateUp",
+            "TmuxNavigateRight",
+            "TmuxNavigatePrevious",
+        },
+        keys = {
+            { "<c-h>",  "<cmd><C-U>TmuxNavigateLeft<cr>" },
+            { "<c-j>",  "<cmd><C-U>TmuxNavigateDown<cr>" },
+            { "<c-k>",  "<cmd><C-U>TmuxNavigateUp<cr>" },
+            { "<c-l>",  "<cmd><C-U>TmuxNavigateRight<cr>" },
+            { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+        },
+        lazy = false,
+    },
+    {
+        'goolord/alpha-nvim',
+        dependencies = {
+            'echasnovski/mini.icons',
+            'nvim-lua/plenary.nvim'
+        },
         config = function()
-            -- vim.cmd.colorscheme "aurora"
-            -- -- override defaults
-            -- vim.api.nvim_set_hl(0, '@number', {fg='#e933e3'})
+            require 'alpha'.setup(require 'alpha.themes.theta'.config)
         end
-    }
+    },
+    {
+        "pmizio/typescript-tools.nvim",
+        dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+        opts = {},
+    },
+    { 'norcalli/nvim-colorizer.lua' },
+    {
+        "zootedb0t/citruszest.nvim",
+        lazy = false,
+        priority = 1000,
+    },
+    { 'AmberLehmann/candyland.nvim', priority = 1000 },
 })
 
 -- colorscheme
-vim.cmd.colorscheme "catppuccin-mocha"
+vim.cmd.colorscheme "citruszest"
 
--- lualine
-require('lualine').setup({
-    options = { section_separators = '', component_separators = '' }
-})
-
---treesitter
-require('nvim-treesitter.configs').setup({
-    highlight = {
-        enable = true,
-    },
-    ensure_installed = {
-        'javascript',
-        'typescript',
-        'html',
-        'css',
-        'json',
-        'lua',
-        'python',
-        'c',
-        'cpp',
-        'rust',
-        'yaml',
-        'toml',
-        'kotlin'
-    }
-})
-
--- commment
-require('Comment').setup()
+-- nvim-tree
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
+--
+-- require("nvim-tree").setup({
+--     sort = {
+--         sorter = "case_sensitive",
+--     },
+--     view = {
+--         width = 50,
+--         side = "right"
+--     },
+--     renderer = {
+--         group_empty = true,
+--     },
+--     filters = {
+--         dotfiles = true,
+--     },
+-- })
+--
+-- vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<cr>')
 
 -- nvim-tree
 local HEIGHT_RATIO = 0.8
@@ -163,6 +190,35 @@ require("nvim-tree").setup({
 
 vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeFindFileToggle<cr>')
 
+-- lualine
+require('lualine').setup {}
+
+--treesitter
+require('nvim-treesitter.configs').setup({
+    highlight = {
+        enable = true,
+    },
+    ensure_installed = {
+        'javascript',
+        'typescript',
+        'html',
+        'css',
+        'json',
+        'lua',
+        'python',
+        'c',
+        'cpp',
+        'rust',
+        'yaml',
+        'toml',
+        'kotlin',
+        'vimdoc',
+        'htmldjango'
+    }
+})
+
+-- commment
+require('Comment').setup()
 
 -- telescope
 vim.keymap.set('n', '<leader><space>', '<cmd>Telescope buffers<cr>')
@@ -187,96 +243,104 @@ require('gitsigns').setup({
 -- bbye
 vim.keymap.set('n', '<leader>k', '<cmd>Bdelete<cr>')
 
-
+-- snippets
+require('luasnip.loaders.from_vscode').lazy_load()
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- LSP Stuff
 
 require('mason').setup()
 require('mason-lspconfig').setup()
+require('mason-lspconfig').setup_handlers {
+    function(server)
+        require('lspconfig')[server].setup {
+            capabilities = capabilities
+        }
+    end,
 
-require('luasnip.loaders.from_vscode').lazy_load()
+    ['lua_ls'] = function()
+        local lspconfig = require('lspconfig')
+        lspconfig.lua_ls.setup {
+            capabilities = capabilities,
+            on_init = function(client)
+                local path = client.workspace_folders[1].name
+                if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+                    client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
+                        Lua = {
+                            runtime = {
+                                -- Tell the language server which version of Lua you're using
+                                -- (most likely LuaJIT in the case of Neovim)
+                                version = 'LuaJIT'
+                            },
+                            -- Make the server aware of Neovim runtime files
+                            workspace = {
+                                checkThirdParty = false,
+                                library = {
+                                    vim.env.VIMRUNTIME
+                                    -- "${3rd}/luv/library"
+                                    -- "${3rd}/busted/library",
+                                }
+                                -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+                                -- library = vim.api.nvim_get_runtime_file("", true)
+                            }
+                        }
+                    })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local lspconfig = require('lspconfig')
+                    client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+                end
+                return true
+            end
+        }
+    end,
 
-lspconfig.pyright.setup {}
-lspconfig.astro.setup {}
--- lspconfig.ccls.setup {
---   init_options = {
---     compilationDatabaseDirectory = "build",
---     index = {
---       threads = 0,
---     },
---     clang = {
---       excludeArgs = { "-frounding-math" },
---     },
---   }
--- }
--- lspconfig.cssls.setup {
---   capabilities = capabilities,
--- }
-lspconfig.clangd.setup {}
-lspconfig.gopls.setup {}
-lspconfig.html.setup {
-    capabilities = capabilities,
-}
-lspconfig.jsonls.setup {
-    capabilities = capabilities,
-}
-lspconfig.jdtls.setup {}
-lspconfig.rust_analyzer.setup {
-    settings = {
-        ['rust-analyzer'] = {
-            diagnostics = {
-                enable = false,
+    ['rust_analyzer'] = function()
+        local lspconfig = require('lspconfig')
+        lspconfig.rust_analyzer.setup {
+            -- on_attach = on_attach,
+            settings = {
+                ["rust-analyzer"] = {
+                    imports = {
+                        granularity = {
+                            group = "module",
+                        },
+                        prefix = "self",
+                    },
+                    cargo = {
+                        buildScripts = {
+                            enable = true,
+                        },
+                    },
+                    procMacro = {
+                        enable = true
+                    },
+                }
             }
         }
-    }
-}
-lspconfig.lua_ls.setup {
-    capabilities = capabilities,
-    on_init = function(client)
-        local path = client.workspace_folders[1].name
-        if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-            client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
-                Lua = {
-                    runtime = {
-                        -- Tell the language server which version of Lua you're using
-                        -- (most likely LuaJIT in the case of Neovim)
-                        version = 'LuaJIT'
-                    },
-                    -- Make the server aware of Neovim runtime files
-                    workspace = {
-                        checkThirdParty = false,
-                        library = {
-                            vim.env.VIMRUNTIME
-                            -- "${3rd}/luv/library"
-                            -- "${3rd}/busted/library",
-                        }
-                        -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                        -- library = vim.api.nvim_get_runtime_file("", true)
-                    }
-                }
-            })
+    end,
 
-            client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-        end
-        return true
-    end
+    ['jinja_lsp'] = function()
+        local lspconfig = require('lspconfig')
+        lspconfig.jinja_lsp.setup {
+            filetypes = { 'html', 'htmldjango', 'templ' }
+        }
+    end,
+
+    ['htmx'] = function()
+        local lspconfig = require('lspconfig')
+        lspconfig.htmx.setup {
+            filetypes = { 'html', 'htmldjango', 'templ' }
+        }
+    end,
+
+    ['html'] = function()
+        local lspconfig = require('lspconfig')
+        lspconfig.html.setup {
+            filetypes = { 'html', 'htmldjango', 'templ' }
+        }
+    end,
 }
-lspconfig.bashls.setup {}
-lspconfig.htmx.setup {
-    filetypes = { "html", "templ", "htmldjango", "htmx" }
-}
-lspconfig.html.setup {
-    filetypes = { "html", "templ", "htmldjango", "htmx" }
-}
-lspconfig.tailwindcss.setup {
-    filetypes = { "html", "templ", "htmldjango", "htmx" }
-}
-lspconfig.tsserver.setup {
-    filetypes = { "html", "templ", "htmldjango", "htmx", "js", "jsx", "ts", "tsx" }
-}
+
+require("typescript-tools").setup {}
 
 vim.keymap.set('n', '<leader>x', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>n', vim.diagnostic.goto_prev)
@@ -294,7 +358,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+        -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
         vim.keymap.set('n', '<leader>ta', vim.lsp.buf.add_workspace_folder, opts)
         vim.keymap.set('n', '<leader>tr', vim.lsp.buf.remove_workspace_folder, opts)
         vim.keymap.set('n', '<leader>tl', function()
@@ -326,9 +390,9 @@ cmp.setup({
     },
     sources = {
         { name = 'path' },
-        { name = 'nvim_lsp', keyword_length = 2 },
-        { name = 'buffer',   keyword_length = 3 },
-        { name = 'luasnip',  keyword_length = 2 },
+        { name = 'nvim_lsp', keyword_length = 3 },
+        { name = 'buffer',   keyword_length = 2 },
+        { name = 'luasnip',  keyword_length = 1 },
     },
     window = {
         documentation = cmp.config.window.bordered(),
@@ -418,3 +482,5 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
     vim.lsp.handlers.signature_help,
     { border = 'rounded' }
 )
+
+require('colorizer').setup {}

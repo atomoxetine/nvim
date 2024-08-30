@@ -16,7 +16,10 @@ vim.opt.clipboard = 'unnamed'
 
 -- netrw settings
 vim.g.netrw_banner = 0
-vim.g.netrw_winsize = 20
+vim.g.netrw_winsize = 25
+vim.g.netrw_liststyle = 1
+vim.g.netrw_browse_split = 4
+vim.g.netrw_keepdir = 0
 
 
 -- Keymaps
@@ -34,42 +37,14 @@ vim.keymap.set({'n', 'x'}, 'X', '"_d')
 -- select all text in current buffer
 vim.keymap.set('n', '<leader>a', ':keepjumps normal! ggVG<cr>')
 
--- open file explorer
-vim.keymap.set('n', '<leader>e', ':Explore<cr>')
+-- netrw
+vim.keymap.set('n', '<leader>e', ':Lexplore!<cr>')
 
 -- window manipulation emacs style :sunglasses:
 vim.keymap.set('n', '<leader>w', '')
 
 -- kill buffer
 vim.keymap.set('n', '<leader>k', ':bd<cr>')
-
--- add double quotes, parenthesis, etc
--- vim.keymap.set('i', '"', '""<left>')
--- vim.keymap.set('i', '(', '()<left>')
--- vim.keymap.set('i', '[', '[]<left>')
--- vim.keymap.set('i', '{', '{}<left>')
--- vim.keymap.set('i', '""', '""')
--- vim.keymap.set('i', '()', '()')
--- vim.keymap.set('i', '[]', '[]')
--- vim.keymap.set('i', '{}', '{}')
--- vim.keymap.set('i', '"<backspace>', '"')
--- vim.keymap.set('i', '(<backspace>', '(')
--- vim.keymap.set('i', '[<backspace>', '[')
--- vim.keymap.set('i', '{<backspace>', '{')
--- vim.keymap.set('i', '"<escape>', '"')
--- vim.keymap.set('i', '(<escape>', '(')
--- vim.keymap.set('i', '[<escape>', '[')
--- vim.keymap.set('i', '{<escape>', '{')
--- vim.keymap.set('i', '"<space>', '"  "<left><left>')
--- vim.keymap.set('i', '(<space>', '(  )<left><left>')
--- vim.keymap.set('i', '[<space>', '[  ]<left><left>')
--- vim.keymap.set('i', '{<space>', '{  }<left><left>')
--- vim.keymap.set('i', '"<cr>', '"<cr><cr>"<up><tab>')
--- vim.keymap.set('i', '(<cr>', '(<cr><cr>)<up><tab>')
--- vim.keymap.set('i', '[<cr>', '[<cr><cr>]<up><tab>')
--- vim.keymap.set('i', '{<cr>', '{<cr><cr>}<up><tab>')
-
--- vim.keymap.set('n', '<leader>ccs', ':colorscheme<space>')
 
 local function getColorschemeIdx(colorscheme)
     local colorschemeList = vim.fn.getcompletion("", "color")
