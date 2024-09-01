@@ -39,3 +39,8 @@ This config uses the Lazy.nvim plugin manager.
 - git
 - a patched font
 - ripgrep
+
+### Showcase
+
+https://github.com/user-attachments/assets/8be5696b-31dd-4edd-af17-d9ea3047561e
+
