@@ -610,7 +610,7 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
     { border = 'rounded' }
 )
 
-require('colorizer').setup {}
+require 'colorizer'.setup()
 
 require('notify').setup {
     stages = "static"
