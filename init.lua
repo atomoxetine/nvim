@@ -11,8 +11,7 @@ function lazy.install(path)
 
     print('Installing lazy.nvim....')
     vim.fn.system({
-        'git',
-        'clone',
+        'git', 'clone',
         '--filter=blob:none',
         'https://github.com/folke/lazy.nvim.git',
         '--branch=stable', -- latest stable release
@@ -38,14 +37,12 @@ lazy.path = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 lazy.opts = {}
 
 lazy.setup({
-    { 'tanvirtin/monokai.nvim' },
     { 'nvim-lualine/lualine.nvim' },
-    -- { 'lukas-reineke/indent-blankline.nvim',      main = "ibl",                                                                                                                          opts = {} },
+    { 'lukas-reineke/indent-blankline.nvim',      main = "ibl",                                                                                                                          opts = {} },
     { 'nvim-treesitter/nvim-treesitter',          build = ':TSUpdate' },
     { 'numToStr/Comment.nvim' },
     { 'tpope/vim-surround' },
     { 'nvim-tree/nvim-tree.lua' },
-    -- { 'prichrd/netrw.nvim',                       opts = {} },
     { 'nvim-tree/nvim-web-devicons' },
     { 'nvim-lua/plenary.nvim' },
     { 'nvim-telescope/telescope.nvim' },
@@ -66,21 +63,12 @@ lazy.setup({
     { 'williamboman/mason-lspconfig.nvim' },
     { 'neovim/nvim-lspconfig' },
     { 'wakatime/vim-wakatime',            lazy = false },
-    { "rose-pine/neovim",                 name = "rose-pine" },
     {
         'windwp/nvim-autopairs',
         event = "InsertEnter",
         config = true
         -- use opts = {} for passing setup options
         -- this is equalent to setup({}) function
-    },
-    {
-        'ray-x/aurora',
-        init = function()
-            -- vim.g.aurora_italic = 1
-            -- vim.g.aurora_transparent = 1
-            vim.g.aurora_bold = 1
-        end,
     },
     {
         "christoomey/vim-tmux-navigator",
@@ -116,38 +104,110 @@ lazy.setup({
         opts = {},
     },
     { 'norcalli/nvim-colorizer.lua' },
+    { "zootedb0t/citruszest.nvim" },
+    { "EdenEast/nightfox.nvim",     priority = 1000, lazy = false },
     {
-        "zootedb0t/citruszest.nvim",
-        lazy = false,
-        priority = 1000,
+        'maxmx03/fluoromachine.nvim',
+        config = function()
+            local fm = require 'fluoromachine'
+
+            fm.setup {
+                glow = true,
+                brightness = 0,
+                theme = 'delta',
+                transparent = true,
+            }
+        end
     },
-    { 'AmberLehmann/candyland.nvim', priority = 1000 },
+    { 'justinmk/vim-sneak' },
+    { "SmiteshP/nvim-navic" },
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        tag = "v4.4.7",
+        opts = {},
+        dependencies = {
+            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+            "MunifTanjim/nui.nvim",
+            -- OPTIONAL:
+            --   `nvim-notify` is only needed, if you want to use the notification view.
+            --   If not available, we use `mini` as the fallback
+            "rcarriga/nvim-notify",
+        }
+    },
+    { 'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons' },
+    {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        opts = {},
+        keys = {
+            {
+                "<leader>?",
+                function()
+                    require("which-key").show({ global = false })
+                end,
+                desc = "Buffer Local Keymaps (which-key)",
+            },
+        },
+    },
+    {
+        "folke/trouble.nvim",
+        opts = {}, -- for default options, refer to the configuration section for custom setup.
+        cmd = "Trouble",
+        keys = {
+            {
+                "<leader>xx",
+                "<cmd>Trouble diagnostics toggle<cr>",
+                desc = "Diagnostics (Trouble)",
+            },
+            {
+                "<leader>xX",
+                "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+                desc = "Buffer Diagnostics (Trouble)",
+            },
+            {
+                "<leader>cs",
+                "<cmd>Trouble symbols toggle focus=false<cr>",
+                desc = "Symbols (Trouble)",
+            },
+            {
+                "<leader>cl",
+                "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+                desc = "LSP Definitions / references / ... (Trouble)",
+            },
+            {
+                "<leader>xL",
+                "<cmd>Trouble loclist toggle<cr>",
+                desc = "Location List (Trouble)",
+            },
+            {
+                "<leader>xQ",
+                "<cmd>Trouble qflist toggle<cr>",
+                desc = "Quickfix List (Trouble)",
+            },
+        },
+    },
+    {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {}
+    },
+    {
+        'nvim-orgmode/orgmode',
+        event = 'VeryLazy',
+        ft = { 'org' },
+        config = function()
+            -- Setup orgmode
+            require('orgmode').setup({
+                org_agenda_files = '~/orgfiles/**/*',
+                org_default_notes_file = '~/orgfiles/refile.org',
+            })
+        end,
+    }
 })
 
 -- colorscheme
-vim.cmd.colorscheme "citruszest"
-
--- nvim-tree
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
---
--- require("nvim-tree").setup({
---     sort = {
---         sorter = "case_sensitive",
---     },
---     view = {
---         width = 50,
---         side = "right"
---     },
---     renderer = {
---         group_empty = true,
---     },
---     filters = {
---         dotfiles = true,
---     },
--- })
---
--- vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<cr>')
+vim.cmd.colorscheme "carbonfox"
 
 -- nvim-tree
 local HEIGHT_RATIO = 0.8
@@ -190,8 +250,68 @@ require("nvim-tree").setup({
 
 vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeFindFileToggle<cr>')
 
+-- navic
+local navic = require("nvim-navic")
+navic.setup {
+    icons = {
+        File = ' ',
+        Module = ' ',
+        Namespace = ' ',
+        Package = ' ',
+        Class = ' ',
+        Method = ' ',
+        Property = ' ',
+        Field = ' ',
+        Constructor = ' ',
+        Enum = ' ',
+        Interface = ' ',
+        Function = ' ',
+        Variable = ' ',
+        Constant = ' ',
+        String = ' ',
+        Number = ' ',
+        Boolean = ' ',
+        Array = ' ',
+        Object = ' ',
+        Key = ' ',
+        Null = ' ',
+        EnumMember = ' ',
+        Struct = ' ',
+        Event = ' ',
+        Operator = ' ',
+        TypeParameter = ' '
+    },
+    highlight = true,
+    lsp = {
+        auto_attach = true,
+        preference = {
+            "emmet_language_server",
+            "html",
+            "tsserver"
+        }
+    }
+}
+
 -- lualine
-require('lualine').setup {}
+require('lualine').setup {
+    winbar = {
+        lualine_c = {
+            {
+                function()
+                    local location = navic.get_location()
+                    if location == "" then
+                        return "%#NavicText#Global Scope%*"
+                    else
+                        return location
+                    end
+                end,
+                cond = function()
+                    return navic.is_available()
+                end
+            }
+        }
+    }
+}
 
 --treesitter
 require('nvim-treesitter.configs').setup({
@@ -213,7 +333,11 @@ require('nvim-treesitter.configs').setup({
         'toml',
         'kotlin',
         'vimdoc',
-        'htmldjango'
+        'htmldjango',
+        'vim',
+        'regex',
+        'bash',
+        'markdown', 'markdown_inline'
     }
 })
 
@@ -241,7 +365,14 @@ require('gitsigns').setup({
 })
 
 -- bbye
+function delete_all_buffers_but_self()
+    local r, c = unpack(vim.api.nvim_win_get_cursor(0))
+    vim.cmd('%bd|e#')
+    vim.api.nvim_win_set_cursor(0, { r, c })
+end
+
 vim.keymap.set('n', '<leader>k', '<cmd>Bdelete<cr>')
+vim.keymap.set('n', '<leader>K', delete_all_buffers_but_self)
 
 -- snippets
 require('luasnip.loaders.from_vscode').lazy_load()
@@ -251,15 +382,16 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 require('mason').setup()
 require('mason-lspconfig').setup()
+local lspconfig = require('lspconfig')
+navic.setup {}
 require('mason-lspconfig').setup_handlers {
     function(server)
         require('lspconfig')[server].setup {
-            capabilities = capabilities
+            capabilities = capabilities,
         }
     end,
 
     ['lua_ls'] = function()
-        local lspconfig = require('lspconfig')
         lspconfig.lua_ls.setup {
             capabilities = capabilities,
             on_init = function(client)
@@ -294,9 +426,7 @@ require('mason-lspconfig').setup_handlers {
     end,
 
     ['rust_analyzer'] = function()
-        local lspconfig = require('lspconfig')
         lspconfig.rust_analyzer.setup {
-            -- on_attach = on_attach,
             settings = {
                 ["rust-analyzer"] = {
                     imports = {
@@ -319,21 +449,18 @@ require('mason-lspconfig').setup_handlers {
     end,
 
     ['jinja_lsp'] = function()
-        local lspconfig = require('lspconfig')
         lspconfig.jinja_lsp.setup {
             filetypes = { 'html', 'htmldjango', 'templ' }
         }
     end,
 
     ['htmx'] = function()
-        local lspconfig = require('lspconfig')
         lspconfig.htmx.setup {
             filetypes = { 'html', 'htmldjango', 'templ' }
         }
     end,
 
     ['html'] = function()
-        local lspconfig = require('lspconfig')
         lspconfig.html.setup {
             filetypes = { 'html', 'htmldjango', 'templ' }
         }
@@ -364,7 +491,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '<leader>tl', function()
             print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
         end, opts)
-        vim.keymap.set('n', 'gtd', vim.lsp.buf.type_definition, opts)
+        -- vim.keymap.set('n', 'gtd', vim.lsp.buf.type_definition, opts)
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
         vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
@@ -484,3 +611,108 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 )
 
 require('colorizer').setup {}
+
+require('notify').setup {
+    stages = "static"
+}
+
+require("noice").setup({
+    lsp = {
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+            ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+        },
+    },
+    -- you can enable a preset for easier configuration
+    presets = {
+        bottom_search = true,         -- use a classic bottom cmdline for search
+        command_palette = true,       -- position the cmdline and popupmenu together
+        long_message_to_split = true, -- long messages will be sent to a split
+        inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+        lsp_doc_border = false,       -- add a border to hover docs and signature help
+    },
+})
+
+local bufferline = require("bufferline")
+bufferline.setup {
+    options = {
+        mode = "tabs",
+        hover = {
+            enabled = true,
+            delay = 200,
+            reveal = { 'close' }
+        },
+        numbers = "ordinal",
+        separator_style = "slope",
+        diagnostics = "nvim_lsp",
+        diagnostics_indicator = function(count, level)
+            local icon = level:match("error") and " " or ""
+            return " " .. icon .. " " .. count
+        end,
+    }
+}
+
+vim.keymap.set('n', '<leader>tn', '<cmd>tabnew<CR>')
+vim.keymap.set('n', '<leader>tc', '<cmd>tabclose<CR>')
+
+function bl_goto(num)
+    return function()
+        bufferline.go_to(num, true)
+    end
+end
+
+vim.keymap.set('n', '<leader>1', bl_goto(1))
+vim.keymap.set('n', '<leader>2', bl_goto(2))
+vim.keymap.set('n', '<leader>3', bl_goto(3))
+vim.keymap.set('n', '<leader>4', bl_goto(4))
+vim.keymap.set('n', '<leader>5', bl_goto(5))
+vim.keymap.set('n', '<leader>6', bl_goto(6))
+vim.keymap.set('n', '<leader>7', bl_goto(7))
+vim.keymap.set('n', '<leader>8', bl_goto(8))
+vim.keymap.set('n', '<leader>9', bl_goto(9))
+vim.keymap.set('n', '<leader>$', bl_goto(-1))
+
+vim.keymap.set('n', '<leader>t1', '<cmd>tabmove 0<CR>')
+vim.keymap.set('n', '<leader>t2', '<cmd>tabmove 1<CR>')
+vim.keymap.set('n', '<leader>t3', '<cmd>tabmove 2<CR>')
+vim.keymap.set('n', '<leader>t4', '<cmd>tabmove 3<CR>')
+vim.keymap.set('n', '<leader>t5', '<cmd>tabmove 4<CR>')
+vim.keymap.set('n', '<leader>t6', '<cmd>tabmove 5<CR>')
+vim.keymap.set('n', '<leader>t7', '<cmd>tabmove 6<CR>')
+vim.keymap.set('n', '<leader>t8', '<cmd>tabmove 7<CR>')
+vim.keymap.set('n', '<leader>t9', '<cmd>tabmove 8<CR>')
+
+
+vim.keymap.set('n', '<leader>tj', '<cmd>tabmove -<CR>')
+vim.keymap.set('n', '<leader>tk', '<cmd>tabmove +<CR>')
+
+local highlight = {
+    "RainbowRed",
+    "RainbowYellow",
+    "RainbowBlue",
+    "RainbowOrange",
+    "RainbowGreen",
+    "RainbowViolet",
+    "RainbowCyan",
+}
+
+local hooks = require "ibl.hooks"
+-- create the highlight groups in the highlight setup hook, so they are reset
+-- every time the colorscheme changes
+hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+    vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#802C15" })
+    vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#85502B" })
+    vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#016F8F" })
+    vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#714A26" })
+    vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#388339" })
+    vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#56388D" })
+    vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#166682" })
+end)
+
+require('ibl').setup {
+    indent = { char = "▏", highlight = highlight }
+}
+
+require('todo-comments').setup {}

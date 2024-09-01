@@ -12,6 +12,7 @@ vim.opt.autoindent = true
 vim.opt.cc = '100'
 vim.opt.expandtab = true
 vim.opt.clipboard = 'unnamed'
+vim.opt.cursorline = true
 
 
 -- netrw settings
