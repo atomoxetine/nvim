@@ -120,7 +120,6 @@ lazy.setup({
         end
     },
     { 'justinmk/vim-sneak' },
-    { "SmiteshP/nvim-navic" },
     {
         "folke/noice.nvim",
         event = "VeryLazy",
@@ -135,7 +134,7 @@ lazy.setup({
             "rcarriga/nvim-notify",
         }
     },
-    { 'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons' },
+    { 'akinsho/bufferline.nvim',         version = "*", dependencies = 'nvim-tree/nvim-web-devicons' },
     {
         "folke/which-key.nvim",
         event = "VeryLazy",
@@ -203,11 +202,12 @@ lazy.setup({
                 org_default_notes_file = '~/orgfiles/refile.org',
             })
         end,
-    }
+    },
+    { 'nyoom-engineering/oxocarbon.nvim' }
 })
 
 -- colorscheme
-vim.cmd.colorscheme "carbonfox"
+vim.cmd.colorscheme "oxocarbon"
 
 -- nvim-tree
 local HEIGHT_RATIO = 0.8
@@ -250,67 +250,28 @@ require("nvim-tree").setup({
 
 vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeFindFileToggle<cr>')
 
--- navic
-local navic = require("nvim-navic")
-navic.setup {
-    icons = {
-        File = ' ',
-        Module = ' ',
-        Namespace = ' ',
-        Package = ' ',
-        Class = ' ',
-        Method = ' ',
-        Property = ' ',
-        Field = ' ',
-        Constructor = ' ',
-        Enum = ' ',
-        Interface = ' ',
-        Function = ' ',
-        Variable = ' ',
-        Constant = ' ',
-        String = ' ',
-        Number = ' ',
-        Boolean = ' ',
-        Array = ' ',
-        Object = ' ',
-        Key = ' ',
-        Null = ' ',
-        EnumMember = ' ',
-        Struct = ' ',
-        Event = ' ',
-        Operator = ' ',
-        TypeParameter = ' '
-    },
-    highlight = true,
-    lsp = {
-        auto_attach = true,
-        preference = {
-            "emmet_language_server",
-            "html",
-            "tsserver"
-        }
-    }
-}
+local trouble = require("trouble")
+local symbols = trouble.statusline({
+    mode = "lsp_document_symbols",
+    groups = {},
+    title = false,
+    filter = { range = true },
+    format = "{kind_icon}{symbol.name:Normal}",
+    -- The following line is needed to fix the background color
+    -- Set it to the lualine section you want to use
+    hl_group = "lualine_c_normal",
+})
 
 -- lualine
 require('lualine').setup {
-    winbar = {
+    sections = {
         lualine_c = {
             {
-                function()
-                    local location = navic.get_location()
-                    if location == "" then
-                        return "%#NavicText#Global Scope%*"
-                    else
-                        return location
-                    end
-                end,
-                cond = function()
-                    return navic.is_available()
-                end
+                symbols.get,
+                cond = symbols.has
             }
         }
-    }
+    },
 }
 
 --treesitter
@@ -383,7 +344,6 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require('mason').setup()
 require('mason-lspconfig').setup()
 local lspconfig = require('lspconfig')
-navic.setup {}
 require('mason-lspconfig').setup_handlers {
     function(server)
         require('lspconfig')[server].setup {
@@ -651,6 +611,9 @@ bufferline.setup {
             local icon = level:match("error") and " " or ""
             return " " .. icon .. " " .. count
         end,
+        indicator = {
+            style = "underline"
+        }
     }
 }
 
