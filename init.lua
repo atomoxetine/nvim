@@ -120,21 +120,8 @@ lazy.setup({
         end
     },
     { 'justinmk/vim-sneak' },
-    {
-        "folke/noice.nvim",
-        event = "VeryLazy",
-        tag = "v4.4.7",
-        opts = {},
-        dependencies = {
-            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-            "MunifTanjim/nui.nvim",
-            -- OPTIONAL:
-            --   `nvim-notify` is only needed, if you want to use the notification view.
-            --   If not available, we use `mini` as the fallback
-            "rcarriga/nvim-notify",
-        }
-    },
-    { 'akinsho/bufferline.nvim',         version = "*", dependencies = 'nvim-tree/nvim-web-devicons' },
+    -- { 'rcarriga/nvim-notify' },
+    { 'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons' },
     {
         "folke/which-key.nvim",
         event = "VeryLazy",
@@ -155,12 +142,12 @@ lazy.setup({
         cmd = "Trouble",
         keys = {
             {
-                "<leader>xx",
+                "<leader>XX",
                 "<cmd>Trouble diagnostics toggle<cr>",
                 desc = "Diagnostics (Trouble)",
             },
             {
-                "<leader>xX",
+                "<leader>Xx",
                 "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
                 desc = "Buffer Diagnostics (Trouble)",
             },
@@ -175,12 +162,12 @@ lazy.setup({
                 desc = "LSP Definitions / references / ... (Trouble)",
             },
             {
-                "<leader>xL",
+                "<leader>XL",
                 "<cmd>Trouble loclist toggle<cr>",
                 desc = "Location List (Trouble)",
             },
             {
-                "<leader>xQ",
+                "<leader>XQ",
                 "<cmd>Trouble qflist toggle<cr>",
                 desc = "Quickfix List (Trouble)",
             },
@@ -203,11 +190,17 @@ lazy.setup({
             })
         end,
     },
-    { 'nyoom-engineering/oxocarbon.nvim' }
+    { 'nyoom-engineering/oxocarbon.nvim' },
+    {
+        "j-hui/fidget.nvim",
+        opts = {
+            -- options
+        },
+    }
 })
 
 -- colorscheme
-vim.cmd.colorscheme "oxocarbon"
+vim.cmd.colorscheme "carbonfox"
 
 -- nvim-tree
 local HEIGHT_RATIO = 0.8
@@ -572,29 +565,6 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 
 require 'colorizer'.setup()
 
-require('notify').setup {
-    stages = "static"
-}
-
-require("noice").setup({
-    lsp = {
-        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-        override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
-        },
-    },
-    -- you can enable a preset for easier configuration
-    presets = {
-        bottom_search = true,         -- use a classic bottom cmdline for search
-        command_palette = true,       -- position the cmdline and popupmenu together
-        long_message_to_split = true, -- long messages will be sent to a split
-        inc_rename = false,           -- enables an input dialog for inc-rename.nvim
-        lsp_doc_border = false,       -- add a border to hover docs and signature help
-    },
-})
-
 local bufferline = require("bufferline")
 bufferline.setup {
     options = {
@@ -679,3 +649,5 @@ require('ibl').setup {
 }
 
 require('todo-comments').setup {}
+
+-- vim.notify = require("notify")
