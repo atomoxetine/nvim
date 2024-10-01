@@ -38,7 +38,7 @@ lazy.opts = {}
 
 lazy.setup({
     { 'nvim-lualine/lualine.nvim' },
-    { 'lukas-reineke/indent-blankline.nvim',      main = "ibl",                                                                                                                          opts = {} },
+    -- { 'lukas-reineke/indent-blankline.nvim',      main = "ibl",                                                                                                                          opts = {} },
     { 'nvim-treesitter/nvim-treesitter',          build = ':TSUpdate' },
     { 'numToStr/Comment.nvim' },
     { 'tpope/vim-surround' },
@@ -98,11 +98,11 @@ lazy.setup({
             require 'alpha'.setup(require 'alpha.themes.theta'.config)
         end
     },
-    {
-        "pmizio/typescript-tools.nvim",
-        dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-        opts = {},
-    },
+    -- {
+    --     "pmizio/typescript-tools.nvim",
+    --     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    --     opts = {},
+    -- },
     { 'norcalli/nvim-colorizer.lua' },
     { "zootedb0t/citruszest.nvim" },
     { "EdenEast/nightfox.nvim",     priority = 1000, lazy = false },
@@ -334,93 +334,137 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- LSP Stuff
 
+
 require('mason').setup()
 require('mason-lspconfig').setup()
 local lspconfig = require('lspconfig')
-require('mason-lspconfig').setup_handlers {
-    function(server)
-        require('lspconfig')[server].setup {
-            capabilities = capabilities,
-        }
-    end,
 
-    ['lua_ls'] = function()
-        lspconfig.lua_ls.setup {
-            capabilities = capabilities,
-            on_init = function(client)
-                local path = client.workspace_folders[1].name
-                if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-                    client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
-                        Lua = {
-                            runtime = {
-                                -- Tell the language server which version of Lua you're using
-                                -- (most likely LuaJIT in the case of Neovim)
-                                version = 'LuaJIT'
-                            },
-                            -- Make the server aware of Neovim runtime files
-                            workspace = {
-                                checkThirdParty = false,
-                                library = {
-                                    vim.env.VIMRUNTIME
-                                    -- "${3rd}/luv/library"
-                                    -- "${3rd}/busted/library",
+function reload_mason_lspconfig()
+    require('mason-lspconfig').setup_handlers {
+        function(server)
+            require('lspconfig')[server].setup {
+                capabilities = capabilities,
+            }
+        end,
+
+        ['lua_ls'] = function()
+            lspconfig.lua_ls.setup {
+                capabilities = capabilities,
+                on_init = function(client)
+                    local path = client.workspace_folders[1].name
+                    if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+                        client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
+                            Lua = {
+                                runtime = {
+                                    -- Tell the language server which version of Lua you're using
+                                    -- (most likely LuaJIT in the case of Neovim)
+                                    version = 'LuaJIT'
+                                },
+                                -- Make the server aware of Neovim runtime files
+                                workspace = {
+                                    checkThirdParty = false,
+                                    library = {
+                                        vim.env.VIMRUNTIME
+                                        -- "${3rd}/luv/library"
+                                        -- "${3rd}/busted/library",
+                                    }
+                                    -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+                                    -- library = vim.api.nvim_get_runtime_file("", true)
                                 }
-                                -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                                -- library = vim.api.nvim_get_runtime_file("", true)
                             }
-                        }
-                    })
+                        })
 
-                    client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+                        client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+                    end
+                    return true
                 end
-                return true
-            end
-        }
-    end,
+            }
+        end,
 
-    ['rust_analyzer'] = function()
-        lspconfig.rust_analyzer.setup {
-            settings = {
-                ["rust-analyzer"] = {
-                    imports = {
-                        granularity = {
-                            group = "module",
+        ['rust_analyzer'] = function()
+            lspconfig.rust_analyzer.setup {
+                settings = {
+                    ["rust-analyzer"] = {
+                        imports = {
+                            granularity = {
+                                group = "module",
+                            },
+                            prefix = "self",
                         },
-                        prefix = "self",
-                    },
-                    cargo = {
-                        buildScripts = {
-                            enable = true,
+                        cargo = {
+                            buildScripts = {
+                                enable = true,
+                                overrideCommand = vim.g.rust_analyzer_cmd
+                            },
+                            allFeatures = true,
+                            allTargets = true,
                         },
-                    },
-                    procMacro = {
-                        enable = true
-                    },
+                        procMacro = {
+                            enable = true
+                        },
+                        checkOnSave = {
+                            allFeatures = true,
+                            allTargets = true,
+                        },
+                        check = {
+                            overrideCommand = vim.g.rust_analyzer_cmd
+                        }
+                    }
                 }
             }
-        }
-    end,
+        end,
 
-    ['jinja_lsp'] = function()
-        lspconfig.jinja_lsp.setup {
-            filetypes = { 'html', 'htmldjango', 'templ' }
-        }
-    end,
+        ['jinja_lsp'] = function()
+            lspconfig.jinja_lsp.setup {
+                filetypes = { 'html', 'htmldjango', 'templ' }
+            }
+        end,
 
-    ['htmx'] = function()
-        lspconfig.htmx.setup {
-            filetypes = { 'html', 'htmldjango', 'templ' }
-        }
-    end,
+        ['htmx'] = function()
+            lspconfig.htmx.setup {
+                filetypes = { 'html', 'htmldjango', 'templ' }
+            }
+        end,
 
-    ['html'] = function()
-        lspconfig.html.setup {
-            filetypes = { 'html', 'htmldjango', 'templ' }
-        }
-    end,
-}
+        ['html'] = function()
+            lspconfig.html.setup {
+                filetypes = { 'html', 'htmldjango', 'templ' }
+            }
+        end,
 
-require("typescript-tools").setup {}
+        ['emmet_language_server'] = function()
+            lspconfig.emmet_language_server.setup {
+                filetypes = {'html', 'htmldjango', 'templ', 'typescriptreact'}
+            }
+        end
+    }
+end
+--
+-- vim.g.rust_analyzer_cmd = { "cargo", "check", "--quiet", "--workspace", "--message-format=json", "--all-targets",
+--     "--keep-going", "--profile=release" }
+--
+-- vim.api.nvim_create_user_command("RustAnalyzerRelease", function()
+--     table.insert(vim.g.rust_analyzer_cmd, "--profile=release")
+--     vim.cmd("LspStop")
+--     reload_mason_lspconfig()
+--     vim.cmd("LspStart")
+-- end, {})
+--
+-- vim.api.nvim_create_user_command("RustAnalyzerDebug", function()
+--     table.remove(vim.g.rust_analyzer_cmd)
+--     vim.cmd("LspStop")
+--     reload_mason_lspconfig()
+--     vim.cmd("LspStart")
+-- end, {})
+
+reload_mason_lspconfig()
+
+
+
+
+
+
+-- require("typescript-tools").setup {}
 
 vim.keymap.set('n', '<leader>x', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>n', vim.diagnostic.goto_prev)
@@ -621,32 +665,35 @@ vim.keymap.set('n', '<leader>t9', '<cmd>tabmove 8<CR>')
 vim.keymap.set('n', '<leader>tj', '<cmd>tabmove -<CR>')
 vim.keymap.set('n', '<leader>tk', '<cmd>tabmove +<CR>')
 
-local highlight = {
-    "RainbowRed",
-    "RainbowYellow",
-    "RainbowBlue",
-    "RainbowOrange",
-    "RainbowGreen",
-    "RainbowViolet",
-    "RainbowCyan",
-}
-
-local hooks = require "ibl.hooks"
--- create the highlight groups in the highlight setup hook, so they are reset
--- every time the colorscheme changes
-hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-    vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#802C15" })
-    vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#85502B" })
-    vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#016F8F" })
-    vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#714A26" })
-    vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#388339" })
-    vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#56388D" })
-    vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#166682" })
-end)
-
-require('ibl').setup {
-    indent = { char = "▏", highlight = highlight }
-}
+-- indenting highlights
+--
+--
+-- local highlight = {
+--     "RainbowRed",
+--     "RainbowYellow",
+--     "RainbowBlue",
+--     "RainbowOrange",
+--     "RainbowGreen",
+--     "RainbowViolet",
+--     "RainbowCyan",
+-- }
+--
+-- local hooks = require "ibl.hooks"
+-- -- create the highlight groups in the highlight setup hook, so they are reset
+-- -- every time the colorscheme changes
+-- hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+--     vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#802C15" })
+--     vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#85502B" })
+--     vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#016F8F" })
+--     vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#714A26" })
+--     vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#388339" })
+--     vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#56388D" })
+--     vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#166682" })
+-- end)
+--
+-- require('ibl').setup {
+--     indent = { char = "▏", highlight = highlight }
+-- }
 
 require('todo-comments').setup {}
 
