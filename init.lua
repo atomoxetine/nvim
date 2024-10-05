@@ -105,14 +105,17 @@ lazy.setup({
     -- },
     { 'norcalli/nvim-colorizer.lua' },
     { "zootedb0t/citruszest.nvim" },
-    { "EdenEast/nightfox.nvim",     priority = 1000, lazy = false },
+    { "EdenEast/nightfox.nvim" },
+    { 'p00f/alabaster.nvim',  priority = 1000, lazy = false },
+    { 'ray-x/aurora' },
+    { 'rafi/awesome-vim-colorschemes' },
     {
         'maxmx03/fluoromachine.nvim',
         config = function()
             local fm = require 'fluoromachine'
 
             fm.setup {
-                glow = true,
+                glow = false,
                 brightness = 0,
                 theme = 'delta',
                 transparent = true,
@@ -190,7 +193,7 @@ lazy.setup({
             })
         end,
     },
-    { 'nyoom-engineering/oxocarbon.nvim' },
+    -- { 'nyoom-engineering/oxocarbon.nvim' },
     {
         "j-hui/fidget.nvim",
         opts = {
@@ -199,8 +202,34 @@ lazy.setup({
     }
 })
 
+local trouble = require("trouble")
+local symbols = trouble.statusline({
+    mode = "lsp_document_symbols",
+    groups = {},
+    title = false,
+    filter = { range = true },
+    format = "{kind_icon}{symbol.name:Normal}",
+    -- The following line is needed to fix the background color
+    -- Set it to the lualine section you want to use
+    hl_group = "lualine_c_normal",
+})
+
+
+
+-- lualine
+require('lualine').setup {
+    -- sections = {
+    --     lualine_c = {
+    --         {
+    --             symbols.get,
+    --             cond = symbols.has
+    --         }
+    --     }
+    -- },
+}
+
 -- colorscheme
-vim.cmd.colorscheme "carbonfox"
+vim.cmd.colorscheme 'fluoromachine'
 
 -- nvim-tree
 local HEIGHT_RATIO = 0.8
@@ -242,30 +271,6 @@ require("nvim-tree").setup({
 })
 
 vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeFindFileToggle<cr>')
-
-local trouble = require("trouble")
-local symbols = trouble.statusline({
-    mode = "lsp_document_symbols",
-    groups = {},
-    title = false,
-    filter = { range = true },
-    format = "{kind_icon}{symbol.name:Normal}",
-    -- The following line is needed to fix the background color
-    -- Set it to the lualine section you want to use
-    hl_group = "lualine_c_normal",
-})
-
--- lualine
-require('lualine').setup {
-    sections = {
-        lualine_c = {
-            {
-                symbols.get,
-                cond = symbols.has
-            }
-        }
-    },
-}
 
 --treesitter
 require('nvim-treesitter.configs').setup({
@@ -434,11 +439,12 @@ function reload_mason_lspconfig()
 
         ['emmet_language_server'] = function()
             lspconfig.emmet_language_server.setup {
-                filetypes = {'html', 'htmldjango', 'templ', 'typescriptreact'}
+                filetypes = { 'html', 'htmldjango', 'templ', 'typescriptreact' }
             }
         end
     }
 end
+
 --
 -- vim.g.rust_analyzer_cmd = { "cargo", "check", "--quiet", "--workspace", "--message-format=json", "--all-targets",
 --     "--keep-going", "--profile=release" }
