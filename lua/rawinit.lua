@@ -9,7 +9,7 @@ vim.opt.breakindent = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.autoindent = true
-vim.opt.cc = '80'
+-- vim.opt.cc = '80'
 vim.opt.expandtab = true
 vim.opt.clipboard = 'unnamed'
 -- vim.opt.cursorline = true
@@ -42,7 +42,7 @@ vim.keymap.set('n', '<leader>a', ':keepjumps normal! ggVG<cr>')
 vim.keymap.set('n', '<leader>e', ':Lexplore!<cr>')
 
 -- window manipulation emacs style :sunglasses:
-vim.keymap.set('n', '<leader>w', '')
+-- vim.keymap.set('n', '<leader>w', '')
 
 -- kill buffer
 vim.keymap.set('n', '<leader>k', ':bd<cr>')

@@ -37,9 +37,8 @@ lazy.path = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 lazy.opts = {}
 
 lazy.setup({
-    { 'nvim-lualine/lualine.nvim' },
-    -- { 'lukas-reineke/indent-blankline.nvim',      main = "ibl",                                                                                                                          opts = {} },
     { 'nvim-treesitter/nvim-treesitter',          build = ':TSUpdate' },
+    { 'nvim-lualine/lualine.nvim' },
     { 'numToStr/Comment.nvim' },
     { 'tpope/vim-surround' },
     { 'nvim-tree/nvim-tree.lua' },
@@ -98,17 +97,15 @@ lazy.setup({
             require 'alpha'.setup(require 'alpha.themes.theta'.config)
         end
     },
-    -- {
-    --     "pmizio/typescript-tools.nvim",
-    --     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    --     opts = {},
-    -- },
     { 'norcalli/nvim-colorizer.lua' },
     { "zootedb0t/citruszest.nvim" },
     { "EdenEast/nightfox.nvim" },
-    { 'p00f/alabaster.nvim',  priority = 1000, lazy = false },
+    { 'p00f/alabaster.nvim',        priority = 1000,     lazy = false },
     { 'ray-x/aurora' },
-    { 'rafi/awesome-vim-colorschemes' },
+    { "bluz71/vim-moonfly-colors",  name = "moonfly",    lazy = false,   priority = 1000 },
+    { 'rebelot/kanagawa.nvim' },
+    { "ellisonleao/gruvbox.nvim",   priority = 1000,     config = true,  opts = ... },
+    { "catppuccin/nvim",            name = "catppuccin", priority = 1000 },
     {
         'maxmx03/fluoromachine.nvim',
         config = function()
@@ -117,13 +114,12 @@ lazy.setup({
             fm.setup {
                 glow = false,
                 brightness = 0,
-                theme = 'delta',
-                transparent = true,
+                theme = 'retrowave',
+                transparent = false,
             }
         end
     },
     { 'justinmk/vim-sneak' },
-    -- { 'rcarriga/nvim-notify' },
     { 'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons' },
     {
         "folke/which-key.nvim",
@@ -193,11 +189,44 @@ lazy.setup({
             })
         end,
     },
-    -- { 'nyoom-engineering/oxocarbon.nvim' },
     {
         "j-hui/fidget.nvim",
         opts = {
             -- options
+        },
+    },
+    ---@type LazySpec
+    {
+        "mikavilpas/yazi.nvim",
+        event = "VeryLazy",
+        keys = {
+            -- 👇 in this section, choose your own keymappings!
+            {
+                "<leader>e",
+                "<cmd>Yazi<cr>",
+                desc = "Open yazi at the current file",
+            },
+            {
+                -- Open in the current working directory
+                "<leader>E",
+                "<cmd>Yazi cwd<cr>",
+                desc = "Open the file manager in nvim's working directory",
+            },
+            {
+                -- NOTE: this requires a version of yazi that includes
+                -- https://github.com/sxyazi/yazi/pull/1305 from 2024-07-18
+                '<c-up>',
+                "<cmd>Yazi toggle<cr>",
+                desc = "Resume the last yazi session",
+            },
+        },
+        ---@type YaziConfig
+        opts = {
+            -- if you want to open yazi instead of netrw, see below for more info
+            open_for_directories = false,
+            keymaps = {
+                show_help = '<f1>',
+            },
         },
     }
 })
@@ -218,59 +247,22 @@ local symbols = trouble.statusline({
 
 -- lualine
 require('lualine').setup {
-    -- sections = {
-    --     lualine_c = {
-    --         {
-    --             symbols.get,
-    --             cond = symbols.has
-    --         }
-    --     }
-    -- },
+    sections = {
+        lualine_c = {
+            {
+                symbols.get,
+                cond = symbols.has
+            }
+        }
+    },
 }
 
 -- colorscheme
-vim.cmd.colorscheme 'fluoromachine'
+vim.cmd.colorscheme 'kanagawa'
 
--- nvim-tree
-local HEIGHT_RATIO = 0.8
-local WIDTH_RATIO = 0.5
+-- disablign netrw
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-require("nvim-tree").setup({
-    view = {
-        float = {
-            enable = true,
-            open_win_config = function()
-                local screen_w = vim.opt.columns:get()
-                local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
-                local window_w = screen_w * WIDTH_RATIO
-                local window_h = screen_h * HEIGHT_RATIO
-                local window_w_int = math.floor(window_w)
-                local window_h_int = math.floor(window_h)
-                local center_x = (screen_w - window_w) / 2
-                local center_y = ((vim.opt.lines:get() - window_h) / 2)
-                    - vim.opt.cmdheight:get()
-                return {
-                    border = 'rounded',
-                    relative = 'editor',
-                    row = center_y,
-                    col = center_x,
-                    width = window_w_int,
-                    height = window_h_int,
-                }
-            end,
-        },
-        width = function()
-            return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
-        end,
-    },
-    filters = {
-        dotfiles = false,
-        git_ignored = false,
-    },
-})
-
-vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeFindFileToggle<cr>')
 
 --treesitter
 require('nvim-treesitter.configs').setup({
@@ -441,36 +433,11 @@ function reload_mason_lspconfig()
             lspconfig.emmet_language_server.setup {
                 filetypes = { 'html', 'htmldjango', 'templ', 'typescriptreact' }
             }
-        end
+        end,
     }
 end
 
---
--- vim.g.rust_analyzer_cmd = { "cargo", "check", "--quiet", "--workspace", "--message-format=json", "--all-targets",
---     "--keep-going", "--profile=release" }
---
--- vim.api.nvim_create_user_command("RustAnalyzerRelease", function()
---     table.insert(vim.g.rust_analyzer_cmd, "--profile=release")
---     vim.cmd("LspStop")
---     reload_mason_lspconfig()
---     vim.cmd("LspStart")
--- end, {})
---
--- vim.api.nvim_create_user_command("RustAnalyzerDebug", function()
---     table.remove(vim.g.rust_analyzer_cmd)
---     vim.cmd("LspStop")
---     reload_mason_lspconfig()
---     vim.cmd("LspStart")
--- end, {})
-
 reload_mason_lspconfig()
-
-
-
-
-
-
--- require("typescript-tools").setup {}
 
 vim.keymap.set('n', '<leader>x', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>n', vim.diagnostic.goto_prev)
@@ -671,36 +638,4 @@ vim.keymap.set('n', '<leader>t9', '<cmd>tabmove 8<CR>')
 vim.keymap.set('n', '<leader>tj', '<cmd>tabmove -<CR>')
 vim.keymap.set('n', '<leader>tk', '<cmd>tabmove +<CR>')
 
--- indenting highlights
---
---
--- local highlight = {
---     "RainbowRed",
---     "RainbowYellow",
---     "RainbowBlue",
---     "RainbowOrange",
---     "RainbowGreen",
---     "RainbowViolet",
---     "RainbowCyan",
--- }
---
--- local hooks = require "ibl.hooks"
--- -- create the highlight groups in the highlight setup hook, so they are reset
--- -- every time the colorscheme changes
--- hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
---     vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#802C15" })
---     vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#85502B" })
---     vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#016F8F" })
---     vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#714A26" })
---     vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#388339" })
---     vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#56388D" })
---     vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#166682" })
--- end)
---
--- require('ibl').setup {
---     indent = { char = "▏", highlight = highlight }
--- }
-
 require('todo-comments').setup {}
-
--- vim.notify = require("notify")
