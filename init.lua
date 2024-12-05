@@ -119,6 +119,12 @@ lazy.setup({
             }
         end
     },
+    {
+  	"folke/tokyonight.nvim",
+	 lazy = false,
+	 priority = 1000,
+	 opts = {},
+    },
     { 'justinmk/vim-sneak' },
     { 'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons' },
     {
@@ -258,7 +264,7 @@ require('lualine').setup {
 }
 
 -- colorscheme
-vim.cmd.colorscheme 'kanagawa'
+vim.cmd.colorscheme 'tokyonight-night'
 
 -- disablign netrw
 vim.g.loaded_netrw = 1
